@@ -48,7 +48,6 @@ def get_latlng_clustercenter(data, clusterscount):
     #return centers,idx
 
 
-
 def main(session):
     # You'll call each of the load_* functions with the session as an argument
 
