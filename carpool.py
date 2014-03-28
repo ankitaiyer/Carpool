@@ -86,9 +86,13 @@ def commute_profile():
 def testmap():
     #show markers for all destination addresses that exist in the Commute table
     dest_address_query = model.session.query(model.Address).filter_by(id=model.Commute.end_addr_id).all()
-    #address_query = model.session.query(model.Address).all()
     dest_latlng_list = background.get_latlng(dest_address_query)
-    #print "latlng_list" , latlng_list
+
+    start_address_query = model.session.query(model.Address).filter_by(id=model.Commute.start_addr_id).all()
+    start_latlng_list = background.get_latlng(start_address_query)
+
+    #all_latlng_list = dest_latlng_list + start_latlng_list
+   
     data = numpy.array(dest_latlng_list)
     centers = background.get_latlng_clustercenter(data,1)
     #lat = centers[0][0] #37.61127878
@@ -96,7 +100,7 @@ def testmap():
     lat = 37.468914900000000000 #bay area center latlng
     lng = -122.155100899999980000 #bay area center latlng
 
-    return render_template("match.html", API_KEY=API_KEY, lat=lat, lng=lng , latlng_list=dest_latlng_list)
+    return render_template("match.html", API_KEY=API_KEY, lat=lat, lng=lng , dest_latlng_list=dest_latlng_list, start_latlng_list=start_latlng_list)
 
 if __name__ == "__main__":
     app.run(debug = True)

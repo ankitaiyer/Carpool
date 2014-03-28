@@ -12,6 +12,7 @@
     </script>
     <script type="text/javascript">
       function initialize() {
+        var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/'
         myLatlng = new google.maps.LatLng({{ lat }}, {{ lng }});
         var mapOptions = {
           center: myLatlng ,
@@ -20,18 +21,33 @@
         var map = new google.maps.Map(document.getElementById("map-canvas"),
             mapOptions);
 
-        var myAddresses = [];
-        {% for address in latlng_list %}
-           myAddresses.push(new google.maps.Marker({
+        var myDestAddresses = [];
+        {% for address in dest_latlng_list %}
+           myDestAddresses.push(new google.maps.Marker({
+                                                   position: new google.maps.LatLng( {{ address[0] }}, {{ address[1] }}),
+                                                    icon: iconBase + 'parking_lot_maps.png',
+                                                   title: "{{ reverse_geocode(latlng="%r,%r" % (address[0],address[1]),location_type="ROOFTOP",result_type="street_address",sensor="true") |safe}}"})
+          );
+        {% endfor %}
+
+        var myStartAddresses = [];
+        {% for address in start_latlng_list %}
+           myDestAddresses.push(new google.maps.Marker({
                                                    position: new google.maps.LatLng( {{ address[0] }}, {{ address[1] }}),
                                                    title: "{{ reverse_geocode(latlng="%r,%r" % (address[0],address[1]),location_type="ROOFTOP",result_type="street_address",sensor="true") |safe}}"})
           );
         {% endfor %}
 
-        for (var i in myAddresses){
+        for (var i in myDestAddresses){
         // To add the marker to the map, call setMap();
-          myAddresses[i].setMap(map);
+          myDestAddresses[i].setMap(map);
         }
+
+        for (var i in myStartAddresses){
+        // To add the marker to the map, call setMap();
+          myStartAddresses[i].setMap(map);
+        }
+
 
         }
       google.maps.event.addDomListener(window, 'load', initialize);
