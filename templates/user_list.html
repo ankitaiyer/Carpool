@@ -1,0 +1,8 @@
+<html>
+<body>
+<!--- TODO: print something really simple here and see if it renders -->
+{% for user in user_list %}
+<p><a href="/users/{{ user.id }}">User {{ user.id }}</a>, age {{ user.age }} has {{ user.ratings|length }} ratings</p>
+{% endfor %}
+</body>
+</html>

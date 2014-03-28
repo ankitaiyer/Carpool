@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <title>MyRide</title>
+        <link href="/static/css/bootstrap.css" rel="stylesheet">
+        <link href="/static/main.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <form class="signin" action = "/signup" method="post">
+                <h2 class="signin-heading">Enter your Commute Details</h2>
+                <ul>
+                {% for message in get_flashed_messages() %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul> 
+                <p>
+                <p> Example Address Format: <strong> 683 Sutter St San Francisco CA 94108 </strong></p>
+                <input type="text" class="form-control" placeholder="Start Address" name="depart">
+                <input type="text" class="form-control" placeholder="Destination Address" name="destination"> 
+                <input type="text" class="form-control" placeholder="Arrival Time" name="starttime">
+                <input type="text" class="form-control" placeholder="Departure Time" name="endtime"> 
+                <input type="text" class="form-control" placeholder="Mobile" name="mobile"> 
+                <input type="text" class="form-control" placeholder="Work" name="work"> 
+                <input type="text" class="form-control" placeholder="Home" name="home"> 
+                </p>
+                <input type="submit" class="btn btn-lg btn-primary btn-block" value="Find Ride Match">
+            </form>
+        </div>
+    </body>
+</html>

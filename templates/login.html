@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <title>MyRide</title>
+        <link href="/static/css/bootstrap.css" rel="stylesheet">
+        <link href="/static/main.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <form class="signin" method="post">
+                <h2 class="signin-heading">Please sign in</h2>
+                <ul>
+                {% for message in get_flashed_messages() %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul> 
+                <p>
+                <input type="text" class="form-control" placeholder="Email" name="email">
+                <input type="password" class="form-control" placeholder="Password" name="password"> 
+                </p>
+                Not a user? <a href="{{ url_for("register") }}">Register</a> a new account
+                <input type="submit" class="btn btn-lg btn-primary btn-block" value="Submit">
+            </form>
+        </div>
+    </body>
+</html>

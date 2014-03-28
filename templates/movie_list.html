@@ -1,0 +1,8 @@
+<html>
+<body>
+<!--- TODO: print something really simple here and see if it renders -->
+{% for movie in movie_list %}  
+<p><a href="/movies/{{ movie.id }}">Movie: {{ movie.name }}</a> has {{ movie.ratings|length }} ratings</p>
+{% endfor %}
+</body>
+</html>

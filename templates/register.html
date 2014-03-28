@@ -1,0 +1,14 @@
+{% extends 'master.html' %}
+{% block body %}
+           <form action="/register" method="POST" class="signin">
+                <h2 class="signin-heading">Register a new account</h2>
+                <input type="integer" class="form-control" placeholder="Firstname" name="firstname">
+                <input type="text" class="form-control" placeholder="Lastname" name="lastname">
+                <input type="text" class="form-control" placeholder="Email" name="email">
+                <input type="password" class="form-control" placeholder="Password" name="password">
+                <input type="password" class="form-control" placeholder="Password" name="password_verify">
+                
+                <input type="submit" class="btn btn-lg btn-primary btn-block" value="Submit">
+            </form>
+{% endblock %}
+

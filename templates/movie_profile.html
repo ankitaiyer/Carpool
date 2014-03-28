@@ -1,0 +1,41 @@
+<html>
+<style>
+    .odd {
+        background-color:#CEECF5;
+    }
+    .even {
+        background-color:#A9F5A9;
+    }
+</style>
+{% if author_id %}
+<div align=right>
+<p>You are logged in as: {{ author_id }}</p>
+<em><a href="/clear_session">Click here to log out</a></em>
+</div>
+{% else %}
+<div align=right>
+    <p><a href="/">Click here to log in</a></p>
+</div>
+{% endif %}
+{% if author_id %}
+        <div class="post_form2">
+        <form action="/movies/{{ movieid }}" method="POST">
+            <legend> Rate or re-rate this movie </legend>
+            <p>
+            Your rating (1-5): <input type="integer" name="rating">
+            </p>
+            <button>Click here to submit</button>
+        </form>
+        </div>
+{% endif %}
+
+
+<body>
+<h2>Ratings for movie {{ movie_ratings[0][2] }}</h2>
+{% for rating in movie_ratings %}
+<div class="{{ loop.cycle('odd', 'even') }}">User: <a href="/users/{{ rating[0] }}"><strong><em>{{ rating[0] }}</em></strong></a> |||  Zip code: <strong>{{ rating[3] }}</strong>  |||  Rating: <strong>{{ rating[1] }}</strong><br></div>
+{% endfor %}
+
+
+</body>
+</html>
