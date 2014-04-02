@@ -9,10 +9,16 @@ from sqlalchemy import DateTime
 import geo
 import background
 import os
+import psycopg2
+import sys
+
 
 #ENGINE = create_engine("sqlite:///carpool.db", echo=False)
 ENGINE = create_engine(os.environ.get("DATABASE_URL", 'postgres://localhost:5432/carpool'), echo=False)
 session = scoped_session(sessionmaker(bind=ENGINE, autocommit = False, autoflush = False))
+
+
+
 #NoResultFound = None
 
 #ENGINE = None
@@ -120,6 +126,8 @@ def complete_commute_profile(user_id, startaddrform, destaddrform, starttimeform
     session.add(temp_commute)
     session.commit()
 
+    return str_addr.id, dest_addr.id
+
 def format_address(adr):
     address = adr.split(',')
     street = address[0] + " " + address[1]
@@ -128,10 +136,62 @@ def format_address(adr):
 def get__addresses():
     return None
 
+def match_users(start_addr_id, end_addr_id):
+    start_distances = session.execute("""SELECT C.user_id AS self_user_id, A.id as self_start_addr_id , C3.user_id AS other_user_id, U.email AS other_user_email, A2.id AS other_start_addr_id, A.lat, A.lng, A2.lat, A2.lng,
+    earth_distance(ll_to_earth(cast(A.lat as double precision), cast(A.lng as double precision)), ll_to_earth(cast(A2.lat as double precision),cast(A2.lng as double precision))) as circle_distance
+    FROM commute C
+    JOIN addresses A ON (C.start_addr_id = A.id)
+    JOIN ( SELECT A2.id, A2.lat, A2.lng
+    FROM addresses A2
+    JOIN commute C2 ON (A2.id = C2.start_addr_id)
+    ) A2 ON (A2.id != A.id)
+    JOIN commute C3 ON (A2.id = C3.start_addr_id)
+    JOIN users U ON (C3.user_id = U.id AND C3.user_id != C.id)
+    WHERE C.start_addr_id = :start_addr_id
+    ORDER BY circle_distance""", { "start_addr_id": start_addr_id })
+
+    possible_matches = { }
+    for row in start_distances:
+        print row
+        key = row.other_user_id
+        value = row.circle_distance
+        if key not in possible_matches :
+            possible_matches[key] = [value]
+    print possible_matches
+
+
+    end_distances = session.execute("""SELECT C.user_id AS self_user_id, A.id as self_end_addr_id , C3.user_id AS other_user_id, U.email AS other_user_email, A2.id AS other_end_addr_id, A.lat, A.lng, A2.lat, A2.lng,
+    earth_distance(ll_to_earth(cast(A.lat as double precision), cast(A.lng as double precision)), ll_to_earth(cast(A2.lat as double precision),cast(A2.lng as double precision))) as circle_distance
+    FROM commute C
+    JOIN addresses A ON (C.end_addr_id = A.id)
+    JOIN ( SELECT A2.id, A2.lat, A2.lng
+    FROM addresses A2
+    JOIN commute C2 ON (A2.id = C2.end_addr_id)
+    ) A2 ON (A2.id != A.id)
+    JOIN commute C3 ON (A2.id = C3.end_addr_id)
+    JOIN users U ON (C3.user_id = U.id AND C3.user_id != C.id)
+    WHERE C.end_addr_id = :end_addr_id
+    ORDER BY circle_distance""", { "end_addr_id": end_addr_id })
+    
+    for row in end_distances:
+        print row
+        key = row.other_user_id
+        value = row.circle_distance
+        if key in possible_matches :
+            if len(possible_matches[key]) < 2 :
+                possible_matches[key].append(row.circle_distance)
+        else:
+            possible_matches[key] = [None, value]
+    
+    return possible_matches
+
 
 
 def main():
     Base.metadata.create_all(ENGINE)
+    match_users("1","2")
+    
+ 
 
 
 if __name__ == "__main__":

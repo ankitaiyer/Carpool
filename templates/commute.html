@@ -1,11 +1,6 @@
-<html>
-    <head>
-        <title>MyRide</title>
-        <link href="/static/css/bootstrap.css" rel="stylesheet">
-        <link href="/static/main.css" rel="stylesheet">
-    </head>
-    <body>
-        <div class="container">
+{% extends 'base.html' %}
+{% block body %}
+        <div class="container" >
             <form class="signin" action = "/signup" method="post">
                 <h2 class="signin-heading">Enter your Commute Details</h2>
                 <ul>
@@ -24,7 +19,7 @@
                 <input type="text" class="form-control" placeholder="Home" name="home"> 
                 </p>
                 <input type="submit" class="btn btn-lg btn-primary btn-block" value="Find Ride Match">
+                <input type="submit" class="btn btn-lg btn-primary btn-block" value="Map Distribution">
             </form>
         </div>
-    </body>
-</html>
+{% endblock %}

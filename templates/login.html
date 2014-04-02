@@ -1,10 +1,5 @@
-<html>
-    <head>
-        <title>MyRide</title>
-        <link href="/static/css/bootstrap.css" rel="stylesheet">
-        <link href="/static/main.css" rel="stylesheet">
-    </head>
-    <body>
+{% extends 'base.html' %}
+{% block body %}
         <div class="container">
             <form class="signin" method="post">
                 <h2 class="signin-heading">Please sign in</h2>
@@ -14,12 +9,11 @@
                 {% endfor %}
                 </ul> 
                 <p>
-                <input type="text" class="form-control" placeholder="Email" name="email">
-                <input type="password" class="form-control" placeholder="Password" name="password"> 
+                <input type="text" class="form-control" placeholder="Email" name="email"> <br>
+                <input type="password" class="form-control" placeholder="Password" name="password"> </br>
                 </p>
-                Not a user? <a href="{{ url_for("register") }}">Register</a> a new account
-                <input type="submit" class="btn btn-lg btn-primary btn-block" value="Submit">
+                Not a registered user? <a href="{{ url_for("register") }}">Register</a> 
+                <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign In">
             </form>
         </div>
-    </body>
-</html>
+{% endblock %}

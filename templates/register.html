@@ -1,14 +1,15 @@
-{% extends 'master.html' %}
+{% extends 'base.html' %}
 {% block body %}
-           <form action="/register" method="POST" class="signin">
-                <h2 class="signin-heading">Register a new account</h2>
-                <input type="integer" class="form-control" placeholder="Firstname" name="firstname">
-                <input type="text" class="form-control" placeholder="Lastname" name="lastname">
-                <input type="text" class="form-control" placeholder="Email" name="email">
-                <input type="password" class="form-control" placeholder="Password" name="password">
-                <input type="password" class="form-control" placeholder="Password" name="password_verify">
-                
-                <input type="submit" class="btn btn-lg btn-primary btn-block" value="Submit">
+        <div id=register>
+            <h2 class="signin-heading">Register</h2>
+            <form action="/register" method="POST" class="signin">
+                <input type="integer" class="form-control" placeholder="Firstname" name="firstname"> </br>
+                <input type="text" class="form-control" placeholder="Lastname" name="lastname"> </br>
+                <input type="text" class="form-control" placeholder="Email" name="email"> </br>
+                <input type="password" class="form-control" placeholder="Password" name="password"> </br>
+                <input type="password" class="form-control" placeholder="Confirm Password" name="password_verify"> </br>
+                <input type="submit" class="btn btn-lg btn-primary btn-block" value="Submit"> </br>
             </form>
+        </div>
 {% endblock %}
 

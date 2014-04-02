@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block body %}
+<div>
+    <h1> Tips for great carpooling: </h1>
+
+    <p> Contact everyone on your matchlist. Register with RideMatch Service for instant access to a list of people with similar schedules who live and work nearby. Contact the entire list and discuss sharing a ride </p>
+
+    <p> Talk about the basics. When planning your carpool, discuss: 
+        <ul>
+            <li> How often? </li>
+            <li> Do all drivers have full insurance coverage? </li>
+            <li> Where will you meet? (Home, corner or central location like a Park & Ride lot) </li>
+            <li> What time will you meet? </li>
+        </ul>
+    </p>
+    <p> Who pays? If commuters rotate driving, money doesn't have to change hands. If only one person drives, passengers can help pay gas and parking. </p>
+
+    <p> Know your fellow carpoolers. Carpoolers may feel more comfortable meeting potential partners in a neutral public place before driving together. Meet for coffee, lunch, or talk on the phone. If needed, request contact information for personal references, and make sure to exchange emergency contact and any necessary medical information prior to starting the carpool. </p>
+    
+    <p> Establish rules. Each carpool is unique. Frequently carpoolers chat about: 
+        <ul>
+            <li> food, smoking, perfume; </li>
+            <li> radios, MP3 players, earphones; </li>
+            <li> cell phones; </li>
+            <li> a plan and limitations for late-comers; </li>
+            <li> sick days and vacations. </li>
+        </ul>
+    </p>
+
+    <p> Try it. Many commuters start carpooling on a trial basis - a month or two. Quickly you'll understand how easy, fast and economical ridesharing is.
+    Join a carpool today. <a href="{{ url_for("register") }}">Register</a> here </p>
+</div>
+{% endblock %}
