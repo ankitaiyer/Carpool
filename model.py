@@ -104,7 +104,29 @@ def get_user_by_email(email):
     #print "user", userid.id
     return userid.id
 
-#### TODO 
+def get_commute_by_user(email):
+    uid = get_user_by_email(email)
+    commutes = session.query(Commute).filter_by(user_id=uid).all()
+    commute_details = {}
+    for commute in commutes:
+        start_address_line = session.query(Address).filter_by(id=commute.start_addr_id).first()
+        end_address_line = session.query(Address).filter_by(id=commute.end_addr_id).first()
+        #print commute.start_addr_id, commute.end_addr_id
+        sa = start_address_line.street + "," + start_address_line.city + "," + start_address_line.state + " "+ start_address_line.zipcode 
+        ea = end_address_line.street + "," + end_address_line.city + "," + end_address_line.state + " " + end_address_line.zipcode
+        commute_details[commute.id] = [sa,ea,commute.start_time,commute.end_time]
+        return commute_details
+
+def split_address(adr):
+    address = adr.split(',')
+    street = address[0] + " " + address[1]
+    return address, street
+
+def get_address_by_addr_id(addr_id):
+    a = session.query(Address).get(addr_id)
+    address =a.street + " " + a.city + " " + a.state + " "+ a.zipcode 
+    return address 
+
 def complete_commute_profile(user_id, startaddrform, destaddrform, starttimeform,endtimform,mobileform,workform,homeform):
     current_user = session.query(User).filter_by(id=user_id).first()
     if current_user:
@@ -112,10 +134,10 @@ def complete_commute_profile(user_id, startaddrform, destaddrform, starttimeform
         current_user.home = homeform
         current_user.work = workform
 
-    start_address = format_address(startaddrform)
+    start_address = split_address(startaddrform)
     str_addr = Address(street=start_address[1], city=start_address[0][2], state=start_address[0][3], zipcode=start_address[0][4])
     
-    dest_address = format_address(destaddrform)
+    dest_address = split_address(destaddrform)
     dest_addr = Address(street=dest_address[1], city=dest_address[0][2], state=dest_address[0][3], zipcode=dest_address[0][4])
     
     session.add(str_addr)
@@ -126,15 +148,10 @@ def complete_commute_profile(user_id, startaddrform, destaddrform, starttimeform
     session.add(temp_commute)
     session.commit()
 
+    background.load_latlng()
+
     return str_addr.id, dest_addr.id
 
-def format_address(adr):
-    address = adr.split(',')
-    street = address[0] + " " + address[1]
-    return address, street
-
-def get__addresses():
-    return None
 
 def match_users(start_addr_id, end_addr_id):
     start_distances = session.execute("""SELECT C.user_id AS self_user_id, A.id as self_start_addr_id , C3.user_id AS other_user_id, U.email AS other_user_email, A2.id AS other_start_addr_id, A.lat, A.lng, A2.lat, A2.lng,
@@ -153,7 +170,7 @@ def match_users(start_addr_id, end_addr_id):
     possible_matches = { }
     for row in start_distances:
         print row
-        key = row.other_user_id
+        key = row.other_user_email
         value = row.circle_distance
         if key not in possible_matches :
             possible_matches[key] = [value]
@@ -175,7 +192,7 @@ def match_users(start_addr_id, end_addr_id):
     
     for row in end_distances:
         print row
-        key = row.other_user_id
+        key = row.other_user_email
         value = row.circle_distance
         if key in possible_matches :
             if len(possible_matches[key]) < 2 :
@@ -185,11 +202,9 @@ def match_users(start_addr_id, end_addr_id):
     
     return possible_matches
 
-
-
 def main():
     Base.metadata.create_all(ENGINE)
-    match_users("1","2")
+    
     
  
 

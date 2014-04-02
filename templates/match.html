@@ -1,14 +1,26 @@
 {% extends 'base.html' %}
 {% block body %}
-<h1>Share Rides Using Social Network</h1>
-        <P> Your start address is : {{ start_addr_id }} </P>
-        <p> Your destination address is : {{ dest_addr_id }} </p>
-        <p>Following Users matched your Carpool profile</p>
-        <ul>
-        {% for row in possible_matches %}
-            <li> User: {{ row }} ,    start point distance {{ possible_matches[row][0]/1609 }} miles  ,    end point distance is {{ possible_matches[row][1]/1609}} miles </li>
-        {% endfor %}       
-        </ul>
-
+<h1>Share Rides Using Social Network</h1> </br>
+    <div>
+        <P> Your start address is : <strong> {{ start_addr }} </strong></P>
+        <p> Your destination address is : <strong> {{ dest_addr }} </strong></p>
+    <div>
+    <h2> Following Users matched your Carpool profile </h2>
+        <table class="table table-bordered">
+            <tr>
+                <th>User</th>
+                <th>Distance from Origin (miles) </th>
+                <th>Distance from Destination (miles)</th>
+                {% for row in possible_matches %}
+                    <tr> 
+                        <td> {{ row }}</td>
+                        <td> {{ possible_matches[row][0]/1609 }} </td>
+                        <td> {{ possible_matches[row][1]/1609 }} </td>
+                    </tr>
+                {% endfor %}
+            </tr>
+        </table>
+    </div>
+    </div>
        
 {% endblock %}

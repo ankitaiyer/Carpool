@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block body %}
+<h1>Share Rides Using Social Network</h1> </br>
+    <div>
+        <p> We found following commutes for <strong> '{{ user }} '</strong></p>
+    <div>
+    <h2> Following Users matched your Carpool profile </h2>
+        <table class="table table-bordered">
+            <tr>
+                <th>Starting Address</th>
+                <th>Destination Address</th>
+                <th>Start time at Origin</th>
+                <th>End time at Destination at</th>
+                {% for commute in commute_details %}
+                    <tr> 
+                        <td> {{ commute_details[commute][0] }}  </td>
+                        <td> {{ commute_details[commute][1] }} </td>
+                        <td> {{ commute_details[commute][2] }}  </td>
+                        <td> {{ commute_details[commute][3] }}  </td>
+                    </tr>
+                {% endfor %}
+            </tr>
+        </table>
+    </div>
+    </div>
+       
+{% endblock %}
