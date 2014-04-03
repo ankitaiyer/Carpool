@@ -3,11 +3,6 @@
         <div class="container">
             <form class="signin" method="post">
                 <h2 class="signin-heading">Please sign in</h2>
-                <ul>
-                {% for message in get_flashed_messages() %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-                </ul> 
                 <p>
                 <input type="text" class="form-control" placeholder="Email" name="email"> <br>
                 <input type="password" class="form-control" placeholder="Password" name="password"> </br>

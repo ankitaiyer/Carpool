@@ -39,7 +39,7 @@ def session_clear():
 def register():
     if "email" in session:
         session.clear()
-        user = None
+    user = None
     return render_template("register.html", user=user )
     
 @app.route("/register", methods=["POST"])
@@ -48,8 +48,18 @@ def registerUser():
     lastnameform = request.form.get("lastname")
     emailform = request.form.get("email")
     passwordform = request.form.get("password")
-    model.register_user(firstnameform,lastnameform,emailform,passwordform)
-    return redirect(url_for("login"))
+    passwordConfirm = request.form.get("password_verify")
+    if (passwordform == passwordConfirm):
+        model.register_user(firstnameform,lastnameform,emailform,passwordform)
+        return redirect(url_for("login"))
+    else:
+        flash("Confirm password does not match the password. Please try again")
+        if "email" in session:
+            session.clear()
+        user = None
+        return render_template("register.html", user=user )
+
+
 
 @app.route("/login")
 def login():
@@ -64,12 +74,15 @@ def process_login():
     passwordform = request.form.get("password")
 
     email = model.authenticate(emailform, hash(passwordform))
-    if email != None:
+    print "functionreturn", email
+    if email == "Auth failed" or email == None:
+        flash("Password incorrect, please try again.")
+        user = None
+        return render_template("login.html", user=user)
+    else:
         flash("User authenticated!")
         session['email'] = email
-    else:
-        flash("Password incorrect, please try again.")
-    return redirect(url_for("main_menu"))
+        return redirect(url_for("main_menu"))
 
 @app.route("/mycommute")
 def main_menu():
@@ -81,7 +94,11 @@ def main_menu():
 
 @app.route("/signup")
 def singup():
-    return render_template("commute.html")
+    if "email" in session:
+        user = session['email']
+    else:
+        user = None
+    return render_template("commute.html", user=user)
 
 @app.route("/signup" , methods=["POST"])
 def commute_profile():
@@ -107,16 +124,21 @@ def match():
     possible_matches = model.match_users(start_addr_id, dest_addr_id)
     start_addr = model.get_address_by_addr_id(start_addr_id)
     dest_addr = model.get_address_by_addr_id(dest_addr_id)
+    print "POSSIBLE MATCHES", possible_matches
     return render_template("match.html", start_addr=start_addr, dest_addr=dest_addr, possible_matches=possible_matches, user=user)
 
 @app.route("/commutelist")
 def commutelist():
-    if "email" in session:
+    if "email" not in session:
+        user = None
+    else:
         user = session['email']
-    commute_details = model.get_commute_by_user(user)
-    return render_template("commutelist.html", user=user, commute_details=commute_details)
-
-#################
+        commute_details = model.get_commute_by_user(user)
+        if commute_details != None:
+            start_addr_id,dest_addr_id = model.get_addressid_by_user(user)
+            return render_template("commutelist.html", user=user, commute_details=commute_details, start_addr_id=start_addr_id, dest_addr_id=dest_addr_id)
+        else:
+            return render_template("commutelist.html", user=user, commute_details=commute_details)
 @app.route("/testmap1")
 def testmap1():
     #show markers for all destination addresses that exist in the Commute table

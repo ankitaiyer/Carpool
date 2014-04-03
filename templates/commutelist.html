@@ -1,27 +1,30 @@
 {% extends 'base.html' %}
 {% block body %}
 <h1>Share Rides Using Social Network</h1> </br>
-    <div>
-        <p> We found following commutes for <strong> '{{ user }} '</strong></p>
-    <div>
-    <h2> Following Users matched your Carpool profile </h2>
-        <table class="table table-bordered">
-            <tr>
-                <th>Starting Address</th>
-                <th>Destination Address</th>
-                <th>Start time at Origin</th>
-                <th>End time at Destination at</th>
-                {% for commute in commute_details %}
-                    <tr> 
-                        <td> {{ commute_details[commute][0] }}  </td>
-                        <td> {{ commute_details[commute][1] }} </td>
-                        <td> {{ commute_details[commute][2] }}  </td>
-                        <td> {{ commute_details[commute][3] }}  </td>
+    {% if commute_details == {} or commute_details == None %}
+        <h2 style="color: #FF0000;"> There are no commutes in the system at this time. <a href="/signup">Enter your commute </a></h2>
+    {% else %}
+        <div>
+            <p> We found the following commutes for <strong> '{{ user }} '</strong></p>
+            <div>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Starting Address</th>
+                        <th>Destination Address</th>
+                        <th>Start time at Origin</th>
+                        <th>End time at Destination at</th>
+                        {% for commute in commute_details %}
+                            <tr> 
+                                <td> {{ commute_details[commute][0] }}  </td>
+                                <td> {{ commute_details[commute][1] }} </td>
+                                <td> {{ commute_details[commute][2] }}  </td>
+                                <td> {{ commute_details[commute][3] }}  </td>
+                            </tr>
+                        {% endfor %}
                     </tr>
-                {% endfor %}
-            </tr>
-        </table>
-    </div>
-    </div>
-       
+                </table>
+            </div>
+            <a href="{{url_for("match") }}?start_addr_id={{ start_addr_id }}&dest_addr_id={{ dest_addr_id }}"> Show carpool matches </a>
+        </div>
+    {% endif %}
 {% endblock %}

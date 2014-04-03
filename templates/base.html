@@ -12,7 +12,7 @@
                 <div class="container">
                     <ul class="nav">
                         <li><a href="{{url_for("index")}}">Home</a></li>
-                        <li><a href="{{url_for("info")}}">Carpool Information</a></li>
+                        <li><a href="{{url_for("info")}}">Carpool Tips</a></li>
                         <li><a href="{{url_for("register")}}">Register</a></li>
                         {% if user == None %}
                             <li><a href="{{url_for("login")}}">Login</a></li>
@@ -24,12 +24,9 @@
                 </div>
             </div>
         </div>
-        <ul>
             {% for message in get_flashed_messages() %}
-                <li>{{ message }}</li>
+                <p style="color: #FF0000;"> {{ message }}</p>
             {% endfor %}
-        </ul>
-        <ul>
             {% if user != None %}
             <div align="right">
                 Not '<strong> {{ user }} </strong>'? <a href="/clear_session"> Logout</a>

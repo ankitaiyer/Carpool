@@ -4,23 +4,26 @@
     <div>
         <P> Your start address is : <strong> {{ start_addr }} </strong></P>
         <p> Your destination address is : <strong> {{ dest_addr }} </strong></p>
-    <div>
-    <h2> Following Users matched your Carpool profile </h2>
-        <table class="table table-bordered">
-            <tr>
-                <th>User</th>
-                <th>Distance from Origin (miles) </th>
-                <th>Distance from Destination (miles)</th>
-                {% for row in possible_matches %}
-                    <tr> 
-                        <td> {{ row }}</td>
-                        <td> {{ possible_matches[row][0]/1609 }} </td>
-                        <td> {{ possible_matches[row][1]/1609 }} </td>
+        <div>
+            {% if possible_matches == {} %}
+                 <h2 style="color: #FF0000;"> There are no matches in the system at this time.</h2>
+            {% else %}
+                <h2> Following Users matched your Carpool profile </h2>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>User</th>
+                        <th>Distance from Origin (miles) </th>
+                        <th>Distance from Destination (miles)</th>
+                        {% for row in possible_matches %}
+                            <tr> 
+                                <td> {{ row }}</td>
+                                <td> {{ possible_matches[row][0]/1609.34 }} </td>
+                                <td> {{ possible_matches[row][1]/1609.34 }} </td>
+                            </tr>
+                        {% endfor %}
                     </tr>
-                {% endfor %}
-            </tr>
-        </table>
-    </div>
-    </div>
-       
+                </table>
+            {% endif %}
+        </div>
+    </div>      
 {% endblock %}

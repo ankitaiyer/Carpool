@@ -87,8 +87,9 @@ def connect():
 
 def authenticate(emailform, passwordform):
     user = session.query(User).filter_by(email=emailform).first()
-    if int(user.password) == int(passwordform):
-        return user.email
+    if user != None:
+        if int(user.password) == int(passwordform):
+            return user.email
     else:
         return "Auth failed"
 
@@ -107,14 +108,17 @@ def get_user_by_email(email):
 def get_commute_by_user(email):
     uid = get_user_by_email(email)
     commutes = session.query(Commute).filter_by(user_id=uid).all()
-    commute_details = {}
-    for commute in commutes:
-        start_address_line = session.query(Address).filter_by(id=commute.start_addr_id).first()
-        end_address_line = session.query(Address).filter_by(id=commute.end_addr_id).first()
-        #print commute.start_addr_id, commute.end_addr_id
-        sa = start_address_line.street + "," + start_address_line.city + "," + start_address_line.state + " "+ start_address_line.zipcode 
-        ea = end_address_line.street + "," + end_address_line.city + "," + end_address_line.state + " " + end_address_line.zipcode
-        commute_details[commute.id] = [sa,ea,commute.start_time,commute.end_time]
+    #print "COMMUTE", commutes
+    if commutes == []:
+        return None
+    else:
+        commute_details = {}
+        for commute in commutes:
+            start_address_line = session.query(Address).filter_by(id=commute.start_addr_id).first()
+            end_address_line = session.query(Address).filter_by(id=commute.end_addr_id).first()
+            sa = start_address_line.street + "," + start_address_line.city + "," + start_address_line.state + " "+ start_address_line.zipcode 
+            ea = end_address_line.street + "," + end_address_line.city + "," + end_address_line.state + " " + end_address_line.zipcode
+            commute_details[commute.id] = [sa,ea,commute.start_time,commute.end_time]
         return commute_details
 
 def split_address(adr):
@@ -169,12 +173,11 @@ def match_users(start_addr_id, end_addr_id):
 
     possible_matches = { }
     for row in start_distances:
-        print row
         key = row.other_user_email
-        value = row.circle_distance
+        value = round(row.circle_distance,2)
         if key not in possible_matches :
             possible_matches[key] = [value]
-    print possible_matches
+    
 
 
     end_distances = session.execute("""SELECT C.user_id AS self_user_id, A.id as self_end_addr_id , C3.user_id AS other_user_id, U.email AS other_user_email, A2.id AS other_end_addr_id, A.lat, A.lng, A2.lat, A2.lng,
@@ -191,16 +194,23 @@ def match_users(start_addr_id, end_addr_id):
     ORDER BY circle_distance""", { "end_addr_id": end_addr_id })
     
     for row in end_distances:
-        print row
         key = row.other_user_email
-        value = row.circle_distance
+        value = round(row.circle_distance,2)
         if key in possible_matches :
             if len(possible_matches[key]) < 2 :
-                possible_matches[key].append(row.circle_distance)
+                possible_matches[key].append(value)
         else:
             possible_matches[key] = [None, value]
-    
     return possible_matches
+
+def get_addressid_by_user(user):
+    u= session.query(User).filter_by(email=user).first()
+    c = session.query(Commute).filter_by(user_id=u.id).first()
+    startA = session.query(Address).filter_by(id=c.start_addr_id).first()
+    start_address = startA.id
+    destA = session.query(Address).filter_by(id=c.end_addr_id).first()
+    end_address = destA.id
+    return start_address, end_address
 
 def main():
     Base.metadata.create_all(ENGINE)
