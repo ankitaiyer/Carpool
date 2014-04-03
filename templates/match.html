@@ -6,10 +6,10 @@
         <p> Your destination address is : <strong> {{ dest_addr }} </strong></p>
         <div>
             {% if possible_matches == [] %}
-                 <h2 style="color: #FF0000;"> There are no matches in the system at this time.</h2>
+                 <h2 style="color:#FF0000;"> There are no matches in the system at this time.</h2>
             {% else %}
-                <h2> Following Users matched your Carpool profile </h2>
-                <table class="table table-bordered">
+                <h2 style="color:#3B9C46"> <strong>Following Users matched your Carpool profile </strong></h2>
+                <table class="table table-bordered" width:70%;>
                     <tr>
                         <th>User</th>
                         <th>Distance from Origin (miles) </th>

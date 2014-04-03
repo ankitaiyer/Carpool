@@ -3,9 +3,24 @@
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
-      html { height: 100% }
-      body { height: 100%; margin: 0; padding: 0 }
-      #map-canvas { height: 100% }
+      html { height: 90% }
+      body { height: 100%; margin: 0; padding: 0; }
+      #map-canvas { height: 100%; width: 80%; }
+      .left-div {
+        float: left;
+        width: 300;
+        height: 20px;
+        margin-right: 8px;
+        margin-left: 8px;
+      }
+      .right-div {
+        margin-left: 20px;
+        margin-right: 20px;
+        float: right;
+        margin-bottom: 20px;
+
+        
+      }​
     </style>
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key= {{ API_KEY }} &sensor=false">
@@ -54,6 +69,12 @@
     </script>
   </head>
   <body>
-    <div id="map-canvas"/>
+    <div class="right-div" id="map-canvas"/> </div>
+    <div class="left-div">
+      <ul> 
+        <li><a href="/commutelist">My current commute Details</a></li>
+        <li><a href="/signup">Enter your commute Details</a></li>
+      </ul>
+    </div>
   </body>
 {% endblock %}
