@@ -5,7 +5,7 @@
         <P> Your start address is : <strong> {{ start_addr }} </strong></P>
         <p> Your destination address is : <strong> {{ dest_addr }} </strong></p>
         <div>
-            {% if possible_matches == {} %}
+            {% if possible_matches == [] %}
                  <h2 style="color: #FF0000;"> There are no matches in the system at this time.</h2>
             {% else %}
                 <h2> Following Users matched your Carpool profile </h2>
@@ -16,13 +16,16 @@
                         <th>Distance from Destination (miles)</th>
                         {% for row in possible_matches %}
                             <tr> 
-                                <td> {{ row }}</td>
-                                <td> {{ possible_matches[row][0]/1609.34 }} </td>
-                                <td> {{ possible_matches[row][1]/1609.34 }} </td>
+                                <td> {{ row[0] }}</td>
+                                <td> {{ '%0.2f' | format((row[1][0])/1609.34|float) }} </td>
+                                <td> {{ '%0.2f' | format((row[1][1])/1609.34|float) }} </td>
                             </tr>
                         {% endfor %}
                     </tr>
                 </table>
+                </div>
+            <a href="{{url_for("map") }}"> Map Distribution </a>
+        </div>
             {% endif %}
         </div>
     </div>      

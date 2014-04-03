@@ -7,6 +7,7 @@ from scipy.cluster.vq import *
 import unicodedata 
 import os
 import geo
+import operator
 #from urlparse import urlparse
 
 API_KEY = os.environ.get('API_KEY')
@@ -121,9 +122,10 @@ def match():
         user = session['email']
     start_addr_id = request.args.get('start_addr_id')
     dest_addr_id = request.args.get('dest_addr_id')
-    possible_matches = model.match_users(start_addr_id, dest_addr_id)
+    matches = model.match_users(start_addr_id, dest_addr_id)
     start_addr = model.get_address_by_addr_id(start_addr_id)
     dest_addr = model.get_address_by_addr_id(dest_addr_id)
+    possible_matches = sorted(matches.iteritems(), key=lambda (k,v): operator.itemgetter(1)(v), reverse=True)
     print "POSSIBLE MATCHES", possible_matches
     return render_template("match.html", start_addr=start_addr, dest_addr=dest_addr, possible_matches=possible_matches, user=user)
 
@@ -139,8 +141,13 @@ def commutelist():
             return render_template("commutelist.html", user=user, commute_details=commute_details, start_addr_id=start_addr_id, dest_addr_id=dest_addr_id)
         else:
             return render_template("commutelist.html", user=user, commute_details=commute_details)
-@app.route("/testmap1")
-def testmap1():
+
+@app.route("/map")
+def map():
+    if "email" not in session:
+        user = None
+    else:
+        user = session['email']
     #show markers for all destination addresses that exist in the Commute table
     dest_address_query = model.session.query(model.Address).filter_by(id=model.Commute.end_addr_id).all()
     dest_latlng_list = background.get_latlng(dest_address_query)
@@ -157,7 +164,7 @@ def testmap1():
     lat = 37.468914900000000000 #bay area center latlng
     lng = -122.155100899999980000 #bay area center latlng
 
-    #return render_template("match_graph.html", API_KEY=API_KEY, lat=lat, lng=lng , dest_latlng_list=dest_latlng_list, start_latlng_list=start_latlng_list)
+    return render_template("match_graph.html", user=user, API_KEY=API_KEY, lat=lat, lng=lng , dest_latlng_list=dest_latlng_list, start_latlng_list=start_latlng_list)
 
 if __name__ == "__main__":
     app.run(debug = True)

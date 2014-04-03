@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>My Ride App</title>
@@ -29,7 +30,7 @@
             {% endfor %}
             {% if user != None %}
             <div align="right">
-                Not '<strong> {{ user }} </strong>'? <a href="/clear_session"> Logout</a>
+                Not '<strong>{{ user }}</strong>'? <a href="/clear_session"> Logout</a>
             </div>
             {% endif %}
         </ul>
