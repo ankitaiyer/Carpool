@@ -1,1 +1,2 @@
-web: python carpool.py
+web: python carpool:app
+
