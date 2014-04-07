@@ -13,6 +13,7 @@ import operator
 API_KEY = os.environ.get('API_KEY')
 
 app = Flask(__name__)
+app.config["DEBUG"] = os.environ.get("DEBUG", False)
 #app.config.from_object(config)
 app.secret_key = "thisispainful"
 app.jinja_env.globals.update(reverse_geocode=geo.reverse_geocode)
@@ -168,6 +169,8 @@ def map():
 
 @app.route("/users/<user>")
 def user(user):
+    user_details = get_userdetails_by_email(user)
+    print user_details
     return None
 
 
