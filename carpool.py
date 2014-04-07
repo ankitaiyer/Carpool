@@ -166,5 +166,12 @@ def map():
 
     return render_template("match_graph.html", user=user, API_KEY=API_KEY, lat=lat, lng=lng , dest_latlng_list=dest_latlng_list, start_latlng_list=start_latlng_list)
 
+@app.route("/users/<user>")
+def user(user):
+    return None
+
+
+
+
 if __name__ == "__main__":
     app.run(debug = True)

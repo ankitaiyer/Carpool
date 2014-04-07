@@ -212,13 +212,17 @@ def get_addressid_by_user(user):
     end_address = destA.id
     return start_address, end_address
 
+def get_userdetails_by_email(email):
+    u = session.query(User).filter_by(email=email).first()
+    sa,da = get_commute_by_user(email)
+    user_details = [u.email, u.firstname, u.lastname, u.mobile, u.work, u.home, sa, da]
+    return user_details
+    
+
 def main():
     Base.metadata.create_all(ENGINE)
     
-    
  
-
-
 if __name__ == "__main__":
     main()
 

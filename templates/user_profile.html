@@ -9,9 +9,8 @@
 </style>
 
 <body>
-<!--- TODO: print something really simple here and see if it renders -->
-<h2>Movie ratings for User {{ userid }}</h2>
-{% for rating in movie_ratings %}
+<h2> You can contact for {{ userid }} for more information</h2>
+{% for item in user_detail %}
 <div class="{{ loop.cycle('odd', 'even') }}">Movie: <a href="/movies/{{ rating[2] }}"><strong><em>{{ rating[0] }}</em></strong></a>  |||  Rating: <strong>{{ rating[1] }}</strong><br></div>
 {% endfor %}
 </body>
