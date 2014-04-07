@@ -16,7 +16,7 @@
                         <th>Distance from Destination (miles)</th>
                         {% for row in possible_matches %}
                             <tr> 
-                                <td><a href="/users/{{user}}"> {{ row[0] }} </a></td>
+                                <td><a href="/users/{{ row[0] }}"> {{ row[0] }} </a></td>
                                 <td> {{ '%0.2f' | format((row[1][0])/1609.34|float) }} </td>
                                 <td> {{ '%0.2f' | format((row[1][1])/1609.34|float) }} </td>
                             </tr>

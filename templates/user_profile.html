@@ -1,17 +1,18 @@
-<html>
-<style>
-    .odd {
-        background-color:#CEECF5;
-    }
-    .even {
-        background-color:#A9F5A9;
-    }
-</style>
-
-<body>
-<h2> You can contact for {{ userid }} for more information</h2>
-{% for item in user_detail %}
-<div class="{{ loop.cycle('odd', 'even') }}">Movie: <a href="/movies/{{ rating[2] }}"><strong><em>{{ rating[0] }}</em></strong></a>  |||  Rating: <strong>{{ rating[1] }}</strong><br></div>
-{% endfor %}
-</body>
-</html>
+{% extends 'base.html' %}
+{% block body %}
+<h1>Share Rides Using Social Network</h1> </br>
+    <div>
+        <ul>
+            <li> Email : <strong> {{ user_details[0]}} </strong> </li>
+            <li> Firstname : <strong> {{ user_details[1]}} </strong> </li>
+            <li> Lastname : <strong> {{ user_details[2]}} </strong> </li>
+            <li> Mobile phone : <strong> {{ user_details[3]}} </strong> </li>
+            <li> Work Phone : <strong> {{ user_details[4]}} </strong> </li>
+            <li> Home Phone : <strong> {{ user_details[5]}} </strong> </li>
+            <li> Start Address  : <strong> {{ user_details[6]}} </strong> </li>
+            <li> Destination Address : <strong> {{ user_details[7]}} </strong> </li>
+            <li> Start Time : <strong> {{ user_details[8]}} </strong> </li>
+            <li> End Time : <strong> {{ user_details[9]}} </strong> </li>
+        </ul>
+    </div>
+{% endblock %}

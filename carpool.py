@@ -127,7 +127,7 @@ def match():
     start_addr = model.get_address_by_addr_id(start_addr_id)
     dest_addr = model.get_address_by_addr_id(dest_addr_id)
     possible_matches = sorted(matches.iteritems(), key=lambda (k,v): operator.itemgetter(1)(v), reverse=True)
-    print "POSSIBLE MATCHES", possible_matches
+    #print "POSSIBLE MATCHES", possible_matches
     return render_template("match.html", start_addr=start_addr, dest_addr=dest_addr, possible_matches=possible_matches, user=user)
 
 @app.route("/commutelist")
@@ -169,9 +169,9 @@ def map():
 
 @app.route("/users/<user>")
 def user(user):
-    user_details = get_userdetails_by_email(user)
-    print user_details
-    return None
+    user_details = model.get_userdetails_by_email(user)
+    #print "USER", user_details
+    return render_template("user_profile.html", user_details=user_details)
 
 
 

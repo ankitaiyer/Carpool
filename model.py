@@ -214,8 +214,10 @@ def get_addressid_by_user(user):
 
 def get_userdetails_by_email(email):
     u = session.query(User).filter_by(email=email).first()
-    sa,da = get_commute_by_user(email)
-    user_details = [u.email, u.firstname, u.lastname, u.mobile, u.work, u.home, sa, da]
+    address = get_commute_by_user(email).values()[0]
+    # user_info = address.values()
+    print "ADDRESS", address
+    user_details = [u.email, u.firstname, u.lastname, u.mobile, u.work, u.home, address[0], address[1], address[2], address[3]]
     return user_details
     
 
