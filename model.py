@@ -89,7 +89,7 @@ def authenticate(emailform, passwordform):
     user = session.query(User).filter_by(email=emailform).first()
     if user != None:
         if int(user.password) == int(passwordform):
-            return user.email
+            return user.password
     else:
         return "Auth failed"
 
