@@ -85,7 +85,7 @@ def process_login():
     print "functionreturn", email
     if email == "Auth failed" or email == None:
         #flash("Password incorrect, please try again.")
-        flash(emailform)
+        flash(hash(passwordform))
         user = None
         return render_template("login.html", user=user)
     else:
