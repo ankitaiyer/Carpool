@@ -84,8 +84,7 @@ def process_login():
     email = model.authenticate(emailform, hash(passwordform))
     print "functionreturn", email
     if email == "Auth failed" or email == None:
-        #flash("Password incorrect, please try again.")
-        flash(passwordform)
+        flash("Password incorrect, please try again.")
         user = None
         return render_template("login.html", user=user)
     else:
