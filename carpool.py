@@ -29,7 +29,11 @@ def index():
 
 @app.route("/info")
 def info():
-    return render_template("info.html")
+    if "email" not in session:
+        user = None
+    else:
+        user = session['email']
+    return render_template("info.html", user=user)
 
 @app.route("/clear_session")
 def session_clear():
@@ -171,7 +175,7 @@ def map():
 def user(user):
     user_details = model.get_userdetails_by_email(user)
     #print "USER", user_details
-    return render_template("user_profile.html", user_details=user_details)
+    return render_template("user_profile.html", user_details=user_details, user=user)
 
 
 
