@@ -22,9 +22,11 @@ app.jinja_env.globals.update(reverse_geocode=geo.reverse_geocode)
 def index():
     if "email" not in session:
         user = None
+        print "USER in Index", user
         return render_template("index.html", user=user)
     else:
         user = session['email']
+        print "user in index", user
         return render_template("index.html", user=user)
 
 @app.route("/info")
@@ -82,7 +84,8 @@ def process_login():
     email = model.authenticate(emailform, hash(passwordform))
     print "functionreturn", email
     if email == "Auth failed" or email == None:
-        flash("Password incorrect, please try again.")
+        #flash("Password incorrect, please try again.")
+        flash(email)
         user = None
         return render_template("login.html", user=user)
     else:
